@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
+    <meta charset="UTF-8">
+    <title>p5サンプル</title>
+  <!--
+<script src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
+-->
+<script src="http://code.createjs.com/easeljs-0.8.2.min.js"></script>
+<canvas id="myCanvas" width="240" height="180"></canvas><br />
+</head>
+<body>
+<script>
+//forked from FumioNonaka's "EaselJSでスプライトシートからアニメーションをつくる" http://jsdo.it/FumioNonaka/d9lw
+var stage;
+var file = "http://jsrun.it/assets/o/E/g/C/oEgC0.png";
+function initialize() {
+	var canvasElement = document.getElementById("myCanvas");
+	stage = new createjs.Stage(canvasElement);
+	setAnimation(file, canvasElement.width / 2, canvasElement.height);
+	createjs.Ticker.addEventListener("tick", stage);
+}
+function setAnimation(file, nX, nY) {
+	var data = {};
+	data.images = [file];
+	data.frames = {width:102, height:282, regX:54, regY:282};
+	data.animations = {
+		walk: [0, 5],
+		// drop: [6, 30, "walk", 2]
+		drop: [6, 30, "walk", 1/2]
+		};
+	var mySpriteSheet = new createjs.SpriteSheet(data);
+	// var animation = new createjs.BitmapAnimation(mySpriteSheet);
+	var animation = new createjs.Sprite(mySpriteSheet);
+	stage.addChild(animation);
+	animation.x = nX;
+	animation.y = nY;
+	animation.gotoAndPlay("drop");
+	animation.addEventListener("click", drop);
+}
+function drop(eventObject) {
+	var instance = eventObject.target;
+	instance.gotoAndPlay("drop");
+}
+initialize();
+  </script>
+    </body>
+</html>
